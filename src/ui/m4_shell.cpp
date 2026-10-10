@@ -13,6 +13,7 @@
 #ifdef CARDPUTER_ADV_M8
 #include "cardputer_adv/core_storage.hpp"
 #include "cardputer_adv/maintenance.hpp"
+#include "cardputer_adv/notifications.hpp"
 #include <esp_system.h>
 #endif
 #ifdef CARDPUTER_ADV_M7_NODES
@@ -35,6 +36,10 @@ TextEditor editor(draft,sizeof(draft)),form(field,sizeof(field));
 char pending_text[kMeshTextBytes+1]{};
 std::uint32_t pending_tx=0,pending_config=0,token=0,frame=0,last_packet=0;
 bool display_ready=false,restored=false,page_pending=false,redraw=true;
+#ifdef CARDPUTER_ADV_M8
+ScreenActivity screen_activity;
+void wake_screen(std::uint32_t now){if(screen_activity.wake(now)){digitalWrite(VTFT_LEDA,HIGH);redraw=true;}}
+#endif
 std::uint64_t history_records=0,history_requested_records=0;
 std::array<StoredRecord,4> history{};
 std::size_t history_count=0;
@@ -347,7 +352,7 @@ void chat_key(const KeyEvent& e) {
         return;
     }
 #ifdef CARDPUTER_ADV_UI_V2
-    if(e.action==KeyAction::Text || e.action==KeyAction::Backspace || e.action==KeyAction::Send){m2_console_message("Enter: escrever; direita: detalhe");return;}
+    if(e.action==KeyAction::Text || e.action==KeyAction::Backspace || e.action==KeyAction::Send)return;
     if(e.action==KeyAction::Enter && !e.repeat){chat_page=ChatPage::Compose;return;}
     if(e.action==KeyAction::Right && !e.repeat) {
 #else
@@ -598,7 +603,7 @@ void draw_chat(int bottom) {
             display.setRGB(palette().text);
 #endif
         }
-        if(!history_count)line(32,page_pending?"Lendo historico...":"Enter: escrever");
+        if(!history_count)line(32,page_pending?"Lendo historico...":"Sem mensagens nesta conversa");
         if(chat_page==ChatPage::Compose){std::snprintf(value,sizeof(value),"%u/%u | Fn+Enter: enviar",unsigned(editor.length()),unsigned(editor.limit()));line(y-16,value);}
         else line(y-16,notice);
     }
@@ -804,6 +809,9 @@ void poll_events() {
         }
         if(e.token==pending_config && pending_config && (e.kind==MeshEventKind::Configured || e.kind==MeshEventKind::Error))pending_config=0;
         if(e.kind==MeshEventKind::Text) {
+#ifdef CARDPUTER_ADV_M8
+            wake_screen(millis());notification_audio_beep();
+#endif
 #ifdef CARDPUTER_ADV_M5
             #ifdef CARDPUTER_ADV_M7
             auto peer=e.destination && e.destination!=0xffffffff?e.node:0;
@@ -841,12 +849,17 @@ void m2_console_begin() {
     frame=millis()-200;menu.begin(millis());
 #ifdef CARDPUTER_ADV_M8
     menu.close();
+    screen_activity.begin(millis());
+    if(!notification_audio_begin())m2_console_message("Audio indisponivel; alerta visual ativo");
 #endif
     pinMode(VTFT_LEDA,OUTPUT);digitalWrite(VTFT_LEDA,HIGH);display_ready=display.init();
     if(display_ready){display.flipScreenVertically();display.setRGB(palette().text);display.setFont(Adv_Plain_12);}
 }
 void m2_console_key(const KeyEvent& e) {
     if(e.action==KeyAction::None)return;
+#ifdef CARDPUTER_ADV_M8
+    wake_screen(millis());
+#endif
 #ifdef CARDPUTER_ADV_M5
     if(switching_chat || app_storage_status().switching){m2_console_message("Carregando conversa; aguarde");return;}
 #endif
@@ -982,7 +995,15 @@ request_page(nav.history_before);redraw=true;}}
 #endif
     && menu.tab()==ShellTab::Chat && (chat_page==ChatPage::List || chat_page==ChatPage::Compose) && !nav.history_before && !page_pending && app_storage_status().records!=history_records)request_page(0);
 #ifdef CARDPUTER_ADV_M5
-    if(restored && !switching_chat && menu.tab()==ShellTab::Chat && (chat_page==ChatPage::List || chat_page==ChatPage::Compose) && !page_pending && !nav.history_before && history_count){auto sequence=std::max_element(history.begin(),history.begin()+history_count,[](const StoredRecord& a,const StoredRecord& b){return a.sequence<b.sequence;})->sequence;if(sequence>nav.read_sequence){nav.read_sequence=sequence;app_storage_mark_read(active_conversation(),sequence);}}
+    if(restored && !switching_chat
+#ifdef CARDPUTER_ADV_M8
+    && screen_activity.lit()
+#endif
+    && menu.tab()==ShellTab::Chat && (chat_page==ChatPage::List || chat_page==ChatPage::Compose) && !page_pending && !nav.history_before && history_count){auto sequence=std::max_element(history.begin(),history.begin()+history_count,[](const StoredRecord& a,const StoredRecord& b){return a.sequence<b.sequence;})->sequence;if(sequence>nav.read_sequence){nav.read_sequence=sequence;app_storage_mark_read(active_conversation(),sequence);}}
+#endif
+#ifdef CARDPUTER_ADV_M8
+    if(screen_activity.tick(millis()))digitalWrite(VTFT_LEDA,0);
+    if(!screen_activity.lit())return;
 #endif
     if(!display_ready || (!redraw && std::uint32_t(now-frame)<100))return;frame=now;redraw=false;
     #ifdef CARDPUTER_ADV_M8

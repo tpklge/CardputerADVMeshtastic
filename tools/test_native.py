@@ -43,6 +43,7 @@ with tempfile.TemporaryDirectory(prefix="adv-native-tests-") as temp:
     subprocess.run([binary,"--m8-chat"],cwd=root,check=True)
     subprocess.run([binary,"--m8-recovery"],cwd=root,check=True)
     subprocess.run([binary,"--continuous-chat"],cwd=root,check=True)
+    subprocess.run([binary,"--notifications"],cwd=root,check=True)
     # Compile production checkpoint/backup functions against a fault-injecting SD.
     # Only the Arduino FS virtual adapter is substituted; tested storage code is unchanged.
     core=(root/"src/storage/core_storage.cpp").read_text()

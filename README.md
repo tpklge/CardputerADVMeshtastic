@@ -2,7 +2,7 @@
 
 Cliente Meshtastic standalone para **M5Stack Cardputer ADV + Cap LoRa-1262 oficial (SX1262, GPS e microSD)**. O núcleo Meshtastic executa no próprio ADV; o uso normal dispensa celular, computador e internet.
 
-**Versão 1.0.0** — [downloads e notas da release](https://github.com/tpklge/CardputerADVMeshtastic/releases/tag/v1.0.0).
+**Versão 1.0.1** — [downloads e notas da release](https://github.com/tpklge/CardputerADVMeshtastic/releases/tag/v1.0.1).
 
 ## Recursos
 
@@ -11,6 +11,7 @@ Cliente Meshtastic standalone para **M5Stack Cardputer ADV + Cap LoRa-1262 ofici
 - Canais editáveis, criação/importação de links digitados e exportação para microSD.
 - Conversas privadas com PKI, consulta de nós, busca, favoritos, posição, distância e rumo quando os dados são válidos.
 - Traceroute manual, diagnóstico, backup de configuração e recuperação pelo próprio ADV.
+- Tela apaga após 30 segundos de inatividade; teclado ou mensagens recebidas reacendem a tela. Mensagens de qualquer canal ou DM emitem um bipe forte, mantendo rádio e SD ativos.
 - Quatro temas de alto contraste e fonte adaptada à tela de 240 × 135.
 - Histórico, rascunhos, preferências, identidade e configuração no microSD. Hora do GPS, com fuso ajustável.
 
@@ -18,11 +19,11 @@ Tab abre o menu inferior e a barra de estado; quando o menu está visível, Tab 
 
 ## Instalação por OTA
 
-Baixe **`cardputer-adv-1.0.0-ota.bin`** na [release v1.0.0](https://github.com/tpklge/CardputerADVMeshtastic/releases/tag/v1.0.0) ou em [newversion/1.0.0](newversion/1.0.0). Use o fluxo de instalação OTA do **M5Launcher já instalado**. O pacote contém somente a aplicação: não inclui bootloader ou tabela de partições.
+Baixe **`cardputer-adv-1.0.1-ota.bin`** na [release v1.0.1](https://github.com/tpklge/CardputerADVMeshtastic/releases/tag/v1.0.1) ou em [newversion/1.0.1](newversion/1.0.1). Use o fluxo de instalação OTA do **M5Launcher já instalado**. O pacote contém somente a aplicação: não inclui bootloader ou tabela de partições.
 
-A versão 0.8.2 foi confirmada funcionando no ADV pelo usuário. A alteração final do histórico em 1.0.0 foi validada por testes automatizados e build. A versão/layout/tamanho do slot do launcher instalado ainda não foram medidos; o manifesto conserva esses campos como não verificados. Este projeto não altera as partições do aparelho.
+A versão 1.0.1 foi confirmada funcionando no ADV pelo usuário. O pacote publicado preserva exatamente o binário testado. A versão/layout/tamanho do slot do launcher instalado ainda não foram medidos; o manifesto conserva esses campos como não verificados. Este projeto não altera as partições do aparelho.
 
-O [binário 0.8.2 previamente testado](newversion/m8-0.8.2) também fica preservado no repositório. Guias M0–M8 registram as etapas anteriores; consulte [o uso atual](docs/M8_USAGE.md) e [as notas de 1.0.0](newversion/1.0.0/RELEASE_NOTES.md).
+O [binário 0.8.2 previamente testado](newversion/m8-0.8.2) também fica preservado no repositório. Guias M0–M8 registram as etapas anteriores; consulte [o uso atual](docs/M8_USAGE.md) e [as notas de 1.0.1](newversion/1.0.1/RELEASE_NOTES.md).
 
 ## Compilar
 
@@ -31,7 +32,7 @@ Requer Python 3.11, Git e a cadeia fixada em [requirements-build.txt](requiremen
 ```sh
 git clone --recurse-submodules https://github.com/tpklge/CardputerADVMeshtastic.git
 cd CardputerADVMeshtastic
-git checkout v1.0.0
+git checkout v1.0.1
 git submodule update --init --recursive
 python3.11 -m venv .venv
 .venv/bin/python -m pip install -r requirements-build.txt
@@ -39,7 +40,7 @@ python3.11 -m venv .venv
 .venv/bin/python tools/build_ota.py --release
 ```
 
-O resultado fica em `newversion/1.0.0`. O build usa `default_8MB.csv` apenas como referência de linkedição. Os scripts de entrega não acessam porta serial nem enviam firmware ao dispositivo.
+O resultado fica em `newversion/1.0.1`. O build usa `default_8MB.csv` apenas como referência de linkedição. Os scripts de entrega não acessam porta serial nem enviam firmware ao dispositivo.
 
 ```sh
 .venv/bin/python tools/test_native.py
@@ -56,4 +57,4 @@ Não há Wi-Fi, BLE, câmera, ajuste de brilho ou outro rádio suportado. Envios
 
 ## Licença e fontes
 
-**GNU GPL versão 3**, conforme o [LICENSE existente no repositório](LICENSE), preservado nesta publicação. As fontes completas da aplicação são publicadas em `main` e no tag `v1.0.0`; o submódulo Meshtastic fixa a revisão utilizada e mantém os avisos/licenças upstream. As dependências conservam suas próprias licenças. Veja [UPSTREAM.md](UPSTREAM.md) e [os componentes de terceiros](THIRD_PARTY.md).
+**GNU GPL versão 3**, conforme o [LICENSE existente no repositório](LICENSE), preservado nesta publicação. As fontes completas da aplicação são publicadas em `main` e no tag `v1.0.1`; o submódulo Meshtastic fixa a revisão utilizada e mantém os avisos/licenças upstream. As dependências conservam suas próprias licenças. Veja [UPSTREAM.md](UPSTREAM.md) e [os componentes de terceiros](THIRD_PARTY.md).

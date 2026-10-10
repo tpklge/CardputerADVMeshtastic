@@ -16,16 +16,16 @@ from prepare_upstream import ROOT, verify_sources
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     mode=parser.add_mutually_exclusive_group(required=True)
-    mode.add_argument("--release",action="store_true",help="prepare the user-authorized 1.0.0 publication, keeping unknown installation limits explicit")
+    mode.add_argument("--release",action="store_true",help="prepare the authorized publication, keeping unknown installation limits explicit")
     mode.add_argument("--diagnostic", action="store_true",
                         help="allow a development candidate with unverified installed launcher layout")
     parser.add_argument("--milestone", choices=("M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8"), default="M8")
     args = parser.parse_args()
     if args.release and args.milestone!="M8":
-        parser.error("The authorized 1.0.0 release uses the complete M8 application.")
+        parser.error("The release uses the complete M8 application.")
     lock = verify_sources()
     environment = "cardputer-adv-" + args.milestone.lower()
-    version = {"M1":"0.1.1-m1", "M2":"0.2.1-m2", "M3":"0.3.0-m3", "M4":"0.4.0-m4", "M5":"0.5.0-m5", "M6":"0.6.0-m6", "M7":"0.7.2-m7", "M8":"1.0.0"}[args.milestone]
+    version = {"M1":"0.1.1-m1", "M2":"0.2.1-m2", "M3":"0.3.0-m3", "M4":"0.4.0-m4", "M5":"0.5.0-m5", "M6":"0.6.0-m6", "M7":"0.7.2-m7", "M8":"1.0.1"}[args.milestone]
     pio = Path(sys.executable).with_name("pio")
     if not pio.exists():
         located = shutil.which("pio")
@@ -52,7 +52,7 @@ def main():
                 "host_requirements_sha256": hashlib.sha256((ROOT / "requirements-build.txt").read_bytes()).hexdigest(),
                 "application_schema": 1 if args.milestone in ("M3", "M4", "M5", "M6", "M7", "M8") else None, "build_layout": "default_8MB.csv (offline reference only)"}
     manifest = package_application(ROOT / ".pio/build" / environment / "firmware.bin",
-                                   ROOT / "newversion" / ("m7-0.7.2" if args.milestone=="M7" else ("1.0.0" if args.release else "m8-1.0.0") if args.milestone=="M8" else args.milestone.lower()), contract, metadata, diagnostic=args.diagnostic)
+                                   ROOT / "newversion" / ("m7-0.7.2" if args.milestone=="M7" else (version if args.release else "m8-"+version) if args.milestone=="M8" else args.milestone.lower()), contract, metadata, diagnostic=args.diagnostic)
     print(f"OTA application: {manifest['filename']} ({manifest['image']['bytes']} bytes)")
     if not manifest["installation_compatibility_verified"]:
         print("Installed launcher slot/version still unverified; no device was accessed.")

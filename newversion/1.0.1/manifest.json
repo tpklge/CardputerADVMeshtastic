@@ -1,0 +1,85 @@
+{
+  "format": "application-only",
+  "stage": "release",
+  "filename": "cardputer-adv-1.0.1-ota.bin",
+  "image": {
+    "chip": "esp32-s3",
+    "segments": 7,
+    "bytes": 904368,
+    "sha256": "31e87d159ba38c1da92741697e801a6e7bc1539dcf2618c0bbf0fee8153e69ad",
+    "application_descriptor": true,
+    "embedded_sha256": true
+  },
+  "build": {
+    "version": "1.0.1",
+    "milestone": "release",
+    "publication_authorized": true,
+    "last_user_confirmed_version": "1.0.1",
+    "mesh_runtime_enabled": true,
+    "built_at_utc": "2026-10-10T06:44:10.000140+00:00",
+    "upstream": {
+      "firmware": {
+        "repository": "https://github.com/meshtastic/firmware.git",
+        "tag": "v2.7.26.54e0d8d",
+        "commit": "54e0d8d0ab2ff56b3a9ce967e53f79e49af560fb"
+      },
+      "submodules": {
+        "protobufs": "6b1ded439633cd03d4af85b44231b91d1d106278",
+        "meshtestic": "dcac7e5673005f4d8a2b1f0f6e06877b689d7519"
+      },
+      "required_submodules": [
+        "protobufs"
+      ],
+      "platform": "platformio/espressif32@6.13.0",
+      "framework": "arduino",
+      "board": "m5stack-stamps3",
+      "platformio_core": "6.2.0",
+      "packages": {
+        "framework-arduinoespressif32": "3.20017.241212",
+        "tool-esptoolpy": "2.41100.260830",
+        "toolchain-xtensa-esp32s3": "8.4.0+2021r2-patch5",
+        "toolchain-riscv32-esp": "8.4.0+2021r2-patch5"
+      },
+      "libraries": {
+        "RadioLib": "https://github.com/jgromes/RadioLib/archive/refs/tags/7.6.0.zip",
+        "TinyGPSPlus": "https://github.com/meshtastic/TinyGPSPlus/archive/71a82db35f3b973440044c476d4bcdc673b104f4.zip",
+        "OLEDDisplay": "https://github.com/meshtastic/esp8266-oled-ssd1306/archive/2e26010040e028baee72e2093402fa7b3c59e430.zip",
+        "ST7789": "https://github.com/meshtastic/st7789/archive/92bae2e4a307afb430c3b0bc3d661c55ee1565f0.zip",
+        "nanopb": "https://github.com/nanopb/nanopb/archive/refs/tags/nanopb-0.4.9.1.zip",
+        "ArduinoThread": "https://github.com/meshtastic/ArduinoThread/archive/b841b0415721f1341ea41cccfb4adccfaf951567.zip"
+      },
+      "m2_libraries": {
+        "OneButton": "https://github.com/meshtastic/OneButton/archive/fa352d668c53f290cfa480a5f79ad422cd828c70.zip",
+        "arduino-fsm": "https://github.com/meshtastic/arduino-fsm/archive/7db3702bf0cfe97b783d6c72595e3f38e0b19159.zip",
+        "ErriezCRC32": "https://github.com/Erriez/ErriezCRC32/archive/refs/tags/1.0.1.zip",
+        "NonBlockingRTTTL": "https://github.com/end2endzone/NonBlockingRTTTL/archive/refs/tags/1.4.0.zip",
+        "Crypto": "rweather/Crypto@0.4.0"
+      }
+    },
+    "resolved_package_report": "Resolving cardputer-adv-m8 dependencies...\nPlatform espressif32 @ 6.13.0 (required: platformio/espressif32 @ 6.13.0)\n\u251c\u2500\u2500 framework-arduinoespressif32 @ 3.20017.241212+sha.dcc1105b (required: platformio/framework-arduinoespressif32 @ 3.20017.241212)\n\u251c\u2500\u2500 tool-esptoolpy @ 2.41100.260830 (required: platformio/tool-esptoolpy @ 2.41100.260830)\n\u251c\u2500\u2500 tool-mklittlefs @ 1.203.210628 (required: platformio/tool-mklittlefs @ ~1.203.0)\n\u251c\u2500\u2500 toolchain-riscv32-esp @ 8.4.0+2021r2-patch5 (required: espressif/toolchain-riscv32-esp @ 8.4.0+2021r2-patch5)\n\u2514\u2500\u2500 toolchain-xtensa-esp32s3 @ 8.4.0+2021r2-patch5 (required: espressif/toolchain-xtensa-esp32s3 @ 8.4.0+2021r2-patch5)\n\nLibraries\n\u251c\u2500\u2500 ArduinoThread @ 0.0.0+20261010003604 (required: https://github.com/meshtastic/ArduinoThread/archive/b841b0415721f1341ea41cccfb4adccfaf951567.zip)\n\u251c\u2500\u2500 Crypto @ 0.4.0 (required: rweather/Crypto @ 0.4.0)\n\u251c\u2500\u2500 ESP8266 and ESP32 OLED driver for SSD1306 displays @ 4.4.1 (required: https://github.com/meshtastic/esp8266-oled-ssd1306/archive/2e26010040e028baee72e2093402fa7b3c59e430.zip)\n\u251c\u2500\u2500 ESP8266 and ESP32 TFT driver for st7789 displays @ 0.0.3 (required: https://github.com/meshtastic/st7789/archive/92bae2e4a307afb430c3b0bc3d661c55ee1565f0.zip)\n\u251c\u2500\u2500 ErriezCRC32 @ 1.0.1 (required: https://github.com/Erriez/ErriezCRC32/archive/refs/tags/1.0.1.zip)\n\u251c\u2500\u2500 Nanopb @ 0.4.9+1 (required: https://github.com/nanopb/nanopb/archive/refs/tags/nanopb-0.4.9.1.zip)\n\u251c\u2500\u2500 NonBlockingRTTTL @ 1.4.0 (required: https://github.com/end2endzone/NonBlockingRTTTL/archive/refs/tags/1.4.0.zip)\n\u251c\u2500\u2500 OneButton @ 2.6.1 (required: https://github.com/meshtastic/OneButton/archive/fa352d668c53f290cfa480a5f79ad422cd828c70.zip)\n\u251c\u2500\u2500 RadioLib @ 7.6.0 (required: https://github.com/jgromes/RadioLib/archive/refs/tags/7.6.0.zip)\n\u251c\u2500\u2500 TinyGPSPlus @ 1.0.3 (required: https://github.com/meshtastic/TinyGPSPlus/archive/71a82db35f3b973440044c476d4bcdc673b104f4.zip)\n\u251c\u2500\u2500 arduino-fsm @ 2.2.0 (required: https://github.com/meshtastic/arduino-fsm/archive/7db3702bf0cfe97b783d6c72595e3f38e0b19159.zip)\n\u2514\u2500\u2500 lvgl @ 8.3.11 (required: lvgl/lvgl @ 8.3.11)\n",
+    "source_sha256": "cb2f85d9f7b8bd4ce985020645e4c9bbb879922497f30fe403f975cbe1126279",
+    "host_requirements_sha256": "c926dfa5e36900c5914384f055c440ad4ad7c97445a3b2964e4caa7ed43307e8",
+    "application_schema": 1,
+    "build_layout": "default_8MB.csv (offline reference only)"
+  },
+  "ota_contract": {
+    "installer": "M5Launcher",
+    "developer": "bmorcelli",
+    "user_confirmed_installer": true,
+    "installed_version": null,
+    "installed_app_slot_bytes": null,
+    "installed_layout_verified": false,
+    "return_to_launcher_verified": false,
+    "target": "esp32-s3",
+    "note": "M5Launcher confirmed by user; 0.8.2 worked on ADV. User authorized 1.0.0 repository/OTA publication. Installed launcher version, partition layout and slot size remain unknown; publication is not a verified installation-contract claim."
+  },
+  "installation_compatibility_verified": false,
+  "hardware_validated": true,
+  "mesh_runtime_enabled": true,
+  "hardware_validation": {
+    "method": "user_confirmation",
+    "version": "1.0.1",
+    "date": "2026-10-10",
+    "tested_candidate_sha256": "31e87d159ba38c1da92741697e801a6e7bc1539dcf2618c0bbf0fee8153e69ad"
+  }
+}

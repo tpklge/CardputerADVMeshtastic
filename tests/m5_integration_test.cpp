@@ -6,6 +6,7 @@
 #include <deque>
 #ifdef CARDPUTER_ADV_M8
 #include "cardputer_adv/maintenance.hpp"
+#include "cardputer_adv/notifications.hpp"
 #include "cardputer_adv/core_storage.hpp"
 #endif
 namespace {
@@ -35,6 +36,9 @@ bool contains(const char* value){for(auto& s:ST7789Spi::strings)if(s.find(value)
 }
 namespace cardputer_adv {
 #ifdef CARDPUTER_ADV_M8
+unsigned audio_beeps=0;
+bool notification_audio_begin(){return true;}
+void notification_audio_beep(){++audio_beeps;}
 TraceSnapshot fake_trace;bool maintenance_in_progress=false;MaintenanceAction last_action;unsigned maintenance_requests=0;
 TraceSnapshot mesh_trace_snapshot(){return fake_trace;}
 bool maintenance_begin(){return true;}
@@ -100,6 +104,33 @@ int main(int argc,char** argv){
     messages[0].sequence=2;messages[0].event.kind=MeshEventKind::Text;messages[0].event.node=0x1234;std::strcpy(messages[0].event.text,"Mensagem recebida no ADV");
     messages[1].sequence=1;messages[1].event.kind=MeshEventKind::Queued;std::strcpy(messages[1].event.text,"Mensagem enviada");
 #ifdef CARDPUTER_ADV_M8
+    if(argc>1 && !std::strcmp(argv[1],"--notifications")){
+        saved.view=0;saved.navigation.shell=true;saved.navigation.conversations=true;
+        fake_millis=1000;m2_console_begin();tick(1001);status.busy=false;tick(1101);
+        assert(fake_backlight==HIGH);tick(30999);assert(fake_backlight==HIGH);
+        tick(31000);assert(fake_backlight==0);
+        key(KeyAction::Enter);assert(fake_backlight==HIGH);
+        key(KeyAction::Text,'x');auto cursor=saved.cursor;
+        tick(fake_millis+30000);assert(fake_backlight==0);
+        MeshEvent incoming;incoming.kind=MeshEventKind::Text;incoming.channel=1;incoming.node=0x1234;
+        events.push_back(incoming);tick(fake_millis+1);assert(fake_backlight==HIGH && audio_beeps==1);
+        assert(saved.cursor==cursor && !std::strcmp(saved.event.text,"rascunhox"));
+        auto received_at=fake_millis;tick(received_at+29999);assert(fake_backlight==HIGH);
+        tick(received_at+30000);assert(fake_backlight==0);
+        incoming.kind=MeshEventKind::RoutingFeedback;events.push_back(incoming);
+        tick(fake_millis+1);assert(fake_backlight==0 && audio_beeps==1);
+        incoming.kind=MeshEventKind::Text;incoming.destination=snapshot.node;
+        events.push_back(incoming);tick(fake_millis+1);assert(fake_backlight==HIGH && audio_beeps==2);
+        key(KeyAction::Escape);key(KeyAction::Text,'z');
+        unsigned hints=0;for(auto& text:ST7789Spi::strings)if(text.find("Enter: escrever")!=std::string::npos)++hints;
+        assert(hints==1 && !contains("direita: detalhe"));
+        messages.clear();status.records=0;tick(fake_millis+101);
+        status.busy=false;tick(fake_millis+101);hints=0;for(auto& text:ST7789Spi::strings)if(text.find("Enter: escrever")!=std::string::npos)++hints;
+        assert(hints==1);
+        ScreenActivity rollover;rollover.begin(0xfffffff0u);assert(!rollover.tick(0xfffffff0u+29999u));
+        assert(rollover.tick(0xfffffff0u+30000u) && !rollover.lit());
+        assert(rollover.wake(50000) && rollover.lit());return 0;
+    }
     if(argc>1 && !std::strcmp(argv[1],"--continuous-chat")){
         continuous_fixture=true;messages.clear();
         for(unsigned i=12;i>0;--i){StoredRecord r;r.sequence=i;r.event.kind=i%2?MeshEventKind::Text:MeshEventKind::Queued;r.event.node=0x1234;std::snprintf(r.event.text,sizeof(r.event.text),"history-%02u",i);messages.push_back(r);}

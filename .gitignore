@@ -22,6 +22,7 @@ test-*.log
 # Keep historical notes locally; publish only the current and last tested binaries.
 newversion/**/*.bin
 !newversion/1.0.0/*.bin
+!newversion/1.0.1/*.bin
 !newversion/m8-0.8.2/*.bin
 # Release source archives are uploaded as assets, avoiding recursive repository bundles.
 newversion/**/*.tar.gz

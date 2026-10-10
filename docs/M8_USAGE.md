@@ -1,6 +1,12 @@
-# Operação da versão 1.0.0
+# Operação da versão 1.0.1
 
-A versão atual é **1.0.0**; o usuário confirmou 0.8.2 funcionando antes da alteração final do histórico. A interface usa quatro abas e mantém os controles validados em 0.7.2. Tab abre o menu e, quando visível, muda de aba; Shift+Tab volta. O menu e a barra superior começam ocultos e aparecem com Tab. Ambos desaparecem cinco segundos após abrir/trocar a aba; digitação/RX não prolongam o prazo. A barra superior não tem fundo destacado: mantém RF/SD/hora à esquerda e apenas a porcentagem estimada de bateria à direita. Usa a estimativa já calculada pelo núcleo a partir da tensão; sem leitura válida mostra `--%`. Abrir uma DM com o menu oculto não o reabre automaticamente. Setas e Esc funcionam sem Fn. Fn nas teclas compartilhadas permite digitar pontuação e links. Enter abre o editor de mensagens; Fn+Enter envia somente com o editor aberto; Esc conserva o rascunho. Durante a composição, o histórico permanece no centro e o texto em edição aparece somente na linha inferior, sem prévia duplicada. Seta direita abre uma mensagem da lista.
+A versão atual é **1.0.1**, confirmada funcionando no ADV pelo usuário. A interface usa quatro abas e mantém os controles validados em 0.7.2. Tab abre o menu e, quando visível, muda de aba; Shift+Tab volta. O menu e a barra superior começam ocultos e aparecem com Tab. Ambos desaparecem cinco segundos após abrir/trocar a aba; digitação/RX não prolongam o prazo. A barra superior não tem fundo destacado: mantém RF/SD/hora à esquerda e apenas a porcentagem estimada de bateria à direita. Usa a estimativa já calculada pelo núcleo a partir da tensão; sem leitura válida mostra `--%`. Abrir uma DM com o menu oculto não o reabre automaticamente. Setas e Esc funcionam sem Fn. Fn nas teclas compartilhadas permite digitar pontuação e links. Enter abre o editor de mensagens; Fn+Enter envia somente com o editor aberto; Esc conserva o rascunho. Durante a composição, o histórico permanece no centro e o texto em edição aparece somente na linha inferior, sem prévia duplicada. Seta direita abre uma mensagem da lista.
+
+## Tela e alerta de mensagens
+
+A iluminação apaga após 30 segundos sem uso do teclado e sem novas mensagens. Qualquer tecla de ação reacende a tela e continua executando sua função normal. Mensagens de texto recebidas em qualquer canal ou DM reacendem a tela por mais 30 segundos e emitem um bipe forte de aproximadamente 320 ms. GPS, telemetria, ACK e mensagens enviadas não acionam o alerta. A rádio e a persistência no microSD continuam funcionando com a tela apagada; isso não é suspensão do ESP32. O bipe usa o ES8311/I2S numa tarefa separada, com fila limitada para rajadas. Novas recepções preservam o rascunho e a posição de leitura do histórico.
+
+A instrução para Enter/detalhes fica apenas no rodapé da lista, inclusive numa conversa vazia.
 
 ## Histórico e rascunhos
 

@@ -16,3 +16,5 @@
 - Não publicar firmware incompleto nem afirmar validação no hardware sem evidência. Não formatar automaticamente o cartão ou apagar configuração existente na inicialização/migração.
 
 - Interface atual (0.7.2+): Enter abre o editor de mensagens; texto/backspace/envio na lista não alteram o rascunho. Seta direita abre o detalhe de mensagem. Setas/Esc sem Fn; Fn nas teclas compartilhadas digita a pontuação; Fn+Enter envia. Mensagens enviadas verdes e recebidas azuis, com identificação textual. LVGL apenas no loop principal, sem manipulação no worker/ISR.
+
+- Ajuste autorizado após 1.0.0: versão 1.0.1 com iluminação apagada após 30 segundos, despertar por teclado/RX de texto e bipe forte pelo ES8311. Sem suspensão do rádio ou do ESP32; sem configuração de brilho. O usuário confirmou 1.0.1 funcionando e autorizou sua publicação em main, com firmware OTA. Preservar os mesmos bytes do binário testado.

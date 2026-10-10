@@ -1,0 +1,1 @@
+31e87d159ba38c1da92741697e801a6e7bc1539dcf2618c0bbf0fee8153e69ad  cardputer-adv-1.0.1-ota.bin
