@@ -1,0 +1,16 @@
+#include "cardputer_adv/channels.hpp"
+#include <cassert>
+#include <cstring>
+#include <fstream>
+#include <string>
+using namespace cardputer_adv;
+int main(){meshtastic_ChannelSet s=meshtastic_ChannelSet_init_zero;bool add=false;assert(channel_url_decode("https://meshtastic.org/e/#CgMSAQE",&s,&add));assert(s.settings_count==1 && s.settings[0].psk.bytes[0]==1);
+ char url[2048];for(unsigned n=1;n<=8;++n){s.settings_count=n;for(unsigned i=0;i<n;++i){std::snprintf(s.settings[i].name,12,"Canal%u",i);s.settings[i].psk.size=32;for(unsigned j=0;j<32;++j)s.settings[i].psk.bytes[j]=i*32+j;}s.has_lora_config=true;s.lora_config.use_preset=true;s.lora_config.region=meshtastic_Config_LoRaConfig_RegionCode_ANZ;s.lora_config.channel_num=20;assert(channel_url_encode(s,true,url,sizeof(url)));meshtastic_ChannelSet decoded{};assert(channel_url_decode(url,&decoded,&add) && add && decoded.settings_count==n);}
+ std::ifstream file("tests/fixtures/channels-eight.url");std::string fixture;std::getline(file,fixture);assert(fixture==url);
+ for(auto invalid:{"","https://evil.example/e/#CgMSAQE","https://meshtastic.org/e/#CgMSAQF","https://meshtastic.org/e/#A","https://meshtastic.org/e/#CgMSAQE==="})assert(!channel_url_decode(invalid,&s,&add));
+ meshtastic_ChannelSettings_psk_t key{};assert(channel_key_parse("AQ==",key) && key.size==1 && key.bytes[0]==1);assert(channel_key_parse("AAAAAAAAAAAAAAAAAAAAAA==",key) && key.size==16);assert(!channel_key_parse("AB==",key));assert(channel_key_parse("00",key) && key.size==1 && !key.bytes[0]);assert(channel_key_parse("",key) && !key.size);
+ ChannelPlan p;for(unsigned i=0;i<8;++i)p.slots[i].index=i;p.slots[0].role=meshtastic_Channel_Role_PRIMARY;p.slots[0].has_settings=true;p.slots[0].settings.psk.size=1;p.slots[0].settings.psk.bytes[0]=1;p.lora.region=meshtastic_Config_LoRaConfig_RegionCode_BR_902;
+ p.lora.use_preset=true;meshtastic_ChannelSet def{};def.settings_count=1;std::strcpy(def.settings[0].name,"LongFast");def.settings[0].psk.size=1;def.settings[0].psk.bytes[0]=1;assert(channel_plan_import(p,def,false,false) && !p.slots[1].role);
+ meshtastic_ChannelSet incoming{};incoming.settings_count=2;std::strcpy(incoming.settings[0].name,"Origem");incoming.settings[0].psk.size=32;std::memset(incoming.settings[0].psk.bytes,42,32);std::strcpy(incoming.settings[1].name,"Herdado");assert(channel_plan_import(p,incoming,false,false));assert(p.slots[2].settings.psk.size==32 && p.slots[2].settings.psk.bytes[0]==42 && p.slots[0].role==1);auto before=p;assert(channel_plan_import(p,incoming,false,false));assert(!std::memcmp(p.slots,before.slots,sizeof(p.slots)));for(unsigned i=3;i<8;++i){p.slots[i]=p.slots[1];p.slots[i].index=i;}std::strcpy(incoming.settings[0].name,"Novo");before=p;assert(!channel_plan_import(p,incoming,false,false));assert(!std::memcmp(p.slots,before.slots,sizeof(p.slots)));
+ incoming.has_lora_config=true;incoming.lora_config.use_preset=true;incoming.lora_config.modem_preset=meshtastic_Config_LoRaConfig_ModemPreset_LONG_FAST;incoming.lora_config.region=meshtastic_Config_LoRaConfig_RegionCode_ANZ;assert(channel_plan_import(p,incoming,true,true));assert(p.lora.region==meshtastic_Config_LoRaConfig_RegionCode_BR_902 && p.slots[0].role==1 && !p.slots[2].role);incoming.lora_config.override_frequency=433;assert(!channel_plan_import(p,incoming,true,true));
+}

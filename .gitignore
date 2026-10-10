@@ -1,0 +1,28 @@
+.pio/
+build/
+.DS_Store
+__pycache__/
+.venv/
+build-*.log
+*.pyc
+newversion/*.bin
+newversion/*.elf
+newversion/SHA256SUMS.txt
+newversion/manifest.json
+newversion/m1/*.bin
+newversion/m1/manifest.json
+newversion/m1/SHA256SUMS.txt
+vendor/meshtastic-firmware/
+
+newversion/m2/*.bin
+newversion/m2/manifest.json
+newversion/m2/SHA256SUMS.txt
+test-*.log
+
+# Keep historical notes locally; publish only the current and last tested binaries.
+newversion/**/*.bin
+!newversion/1.0.0/*.bin
+!newversion/m8-0.8.2/*.bin
+# Release source archives are uploaded as assets, avoiding recursive repository bundles.
+newversion/**/*.tar.gz
+newversion/**/SOURCE_SHA256SUMS.txt

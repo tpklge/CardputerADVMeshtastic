@@ -1,0 +1,18 @@
+; REFERÊNCIA HISTÓRICA do planejamento, sem ambiente compilável.
+; O build M1 ativo está em platformio.ini; não substituir pelo exemplo.
+;
+; Base candidata: meshtastic/firmware, ambiente m5stack-cardputer-adv.
+; Núcleo Meshtastic compilado com a interface no mesmo firmware.
+; Fixar release/commit, submódulos e toolchain antes do primeiro build.
+; Integrar os fontes próprios ao build upstream, preservando seu setup/loop.
+;
+; Intenção de produto: excluir Wi-Fi, Bluetooth e MQTT; manter LoRa e GPS.
+; Verificar nomes/efeitos dos flags na revisão escolhida.
+; Backend gráfico próprio: decidir como desativar somente a UI original.
+; Não excluir GPS nem inicialização de hardware necessária ao display/teclado.
+;
+; board, tamanho da flash, partições e limite do app:
+; definir somente após verificar o instalador OTA existente.
+; Não copiar upload_protocol/partições do upstream sem essa verificação.
+;
+; Nenhum comando de upload ou porta serial integra este projeto.

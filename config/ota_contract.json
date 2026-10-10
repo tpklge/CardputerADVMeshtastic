@@ -1,0 +1,11 @@
+{
+  "installer": "M5Launcher",
+  "developer": "bmorcelli",
+  "user_confirmed_installer": true,
+  "installed_version": null,
+  "installed_app_slot_bytes": null,
+  "installed_layout_verified": false,
+  "return_to_launcher_verified": false,
+  "target": "esp32-s3",
+  "note": "M5Launcher confirmed by user; 0.8.2 worked on ADV. User authorized 1.0.0 repository/OTA publication. Installed launcher version, partition layout and slot size remain unknown; publication is not a verified installation-contract claim."
+}

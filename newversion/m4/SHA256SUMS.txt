@@ -1,0 +1,1 @@
+8c4d67e95e13cd8aa19495f9650233cf9d7a866a6237df6ee828fc17d33b2f70  cardputer-adv-0.4.0-m4-candidate-ota.bin

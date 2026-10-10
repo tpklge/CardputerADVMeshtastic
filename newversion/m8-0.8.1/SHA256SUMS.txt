@@ -1,0 +1,1 @@
+c7bfdcf6ad70526ea5556385f3c70d0ccc324979f5a72f4085b11e95580e5e51  cardputer-adv-0.8.1-m8-candidate-ota.bin

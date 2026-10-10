@@ -1,0 +1,6 @@
+#include "cardputer_adv/keyboard_decoder.hpp"
+#include <cassert>
+using namespace cardputer_adv;
+constexpr std::uint8_t fifo(unsigned i,bool down){return 1+(i/8)*10+i%8+(down?0x80:0);}
+int main(){KeyboardDecoder d;const unsigned keys[]={0,43,46,47,51};const KeyAction actions[]={KeyAction::Escape,KeyAction::Left,KeyAction::Up,KeyAction::Down,KeyAction::Right};const char signs[]={'`',',',';','.','/'};for(unsigned n=0;n<5;++n){d.reset();assert(d.feed(fifo(keys[n],true),0).action==actions[n]);d.reset();d.feed(fifo(2,true),0);assert(d.feed(fifo(keys[n],true),1).character==signs[n]);}d.reset();assert(d.feed(fifo(54,true),0).action==KeyAction::Enter);d.reset();d.feed(fifo(2,true),0);assert(d.feed(fifo(54,true),1).action==KeyAction::Send);assert(d.tick(1000).action==KeyAction::None);d.reset();assert(d.feed(fifo(51,true),0).action==KeyAction::Right);assert(d.tick(450).action==KeyAction::Right && d.tick(530).repeat);
+const char* url="https://meshtastic.org/e/?add=true#Aa-_=123";for(auto p=url;*p;++p){bool found=false;for(unsigned i=0;i<56 && !found;++i)for(unsigned mods=0;mods<4 && !found;++mods){d.reset();if(mods&1)d.feed(fifo(6,true),0);if(mods&2)d.feed(fifo(2,true),0);auto e=d.feed(fifo(i,true),1);found=e.action==KeyAction::Text && e.character==*p;}assert(found);}}

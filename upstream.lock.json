@@ -1,0 +1,39 @@
+{
+  "firmware": {
+    "repository": "https://github.com/meshtastic/firmware.git",
+    "tag": "v2.7.26.54e0d8d",
+    "commit": "54e0d8d0ab2ff56b3a9ce967e53f79e49af560fb"
+  },
+  "submodules": {
+    "protobufs": "6b1ded439633cd03d4af85b44231b91d1d106278",
+    "meshtestic": "dcac7e5673005f4d8a2b1f0f6e06877b689d7519"
+  },
+  "required_submodules": [
+    "protobufs"
+  ],
+  "platform": "platformio/espressif32@6.13.0",
+  "framework": "arduino",
+  "board": "m5stack-stamps3",
+  "platformio_core": "6.2.0",
+  "packages": {
+    "framework-arduinoespressif32": "3.20017.241212",
+    "tool-esptoolpy": "2.41100.260830",
+    "toolchain-xtensa-esp32s3": "8.4.0+2021r2-patch5",
+    "toolchain-riscv32-esp": "8.4.0+2021r2-patch5"
+  },
+  "libraries": {
+    "RadioLib": "https://github.com/jgromes/RadioLib/archive/refs/tags/7.6.0.zip",
+    "TinyGPSPlus": "https://github.com/meshtastic/TinyGPSPlus/archive/71a82db35f3b973440044c476d4bcdc673b104f4.zip",
+    "OLEDDisplay": "https://github.com/meshtastic/esp8266-oled-ssd1306/archive/2e26010040e028baee72e2093402fa7b3c59e430.zip",
+    "ST7789": "https://github.com/meshtastic/st7789/archive/92bae2e4a307afb430c3b0bc3d661c55ee1565f0.zip",
+    "nanopb": "https://github.com/nanopb/nanopb/archive/refs/tags/nanopb-0.4.9.1.zip",
+    "ArduinoThread": "https://github.com/meshtastic/ArduinoThread/archive/b841b0415721f1341ea41cccfb4adccfaf951567.zip"
+  },
+  "m2_libraries": {
+    "OneButton": "https://github.com/meshtastic/OneButton/archive/fa352d668c53f290cfa480a5f79ad422cd828c70.zip",
+    "arduino-fsm": "https://github.com/meshtastic/arduino-fsm/archive/7db3702bf0cfe97b783d6c72595e3f38e0b19159.zip",
+    "ErriezCRC32": "https://github.com/Erriez/ErriezCRC32/archive/refs/tags/1.0.1.zip",
+    "NonBlockingRTTTL": "https://github.com/end2endzone/NonBlockingRTTTL/archive/refs/tags/1.4.0.zip",
+    "Crypto": "rweather/Crypto@0.4.0"
+  }
+}

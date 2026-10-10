@@ -1,0 +1,17 @@
+# Correções de consolidação — 0.8.2
+
+Implementa os itens 1, 2 e 4 da análise para 1.0, os ajustes adicionais autorizados para interface/histórico/checkpoints/composição e os três pontos menores. A confirmação física anterior registrada é de 0.8.0; esta revisão é um candidato para teste no ADV.
+
+- Recuperação: quando o SD monta mas a configuração impede iniciar o núcleo, a interface oferece a restauração de backup sem exigir rádio ou histórico prontos. Verifica revisão do núcleo, protobufs, tamanhos/CRCs, MAC de fábrica e ID do aparelho. Esquemas futuros permanecem bloqueados. Histórico e rascunhos não são substituídos.
+- Resultados: cada comando aceito reserva uma confirmação numa fila separada. Saturação dos eventos de RX não remove resultados de envio, ajustes, canais, favoritos ou traceroute. Sem capacidade reservada, outro comando é recusado antes de execução.
+- Rascunhos: gravação após um segundo sem alterações ou cinco segundos de alterações contínuas, sujeito ao processamento do cartão. Estado idêntico não cria outra geração. Aplica também ao link em edição; ações de confirmação continuam forçando alterações pendentes.
+- LVGL: mantém os objetos entre composições da tela e altera texto/estilo/geometria/visibilidade quando necessário. Uma tela idêntica não provoca outro flush. Abas, menu, seleção e temas atualizam as regiões afetadas.
+- Chat: mensagens em ordem cronológica, recentes embaixo; cima/baixo navegam nos dois sentidos por todo o histórico retido, inclusive durante a composição. Ler mensagens antigas suspende o acompanhamento automático até voltar à mais recente. RX atualiza o histórico durante a edição sem alterar texto/cursor. O rascunho aparece somente na linha inferior.
+- Checkpoints: reutiliza os arquivos da cópia de destino somente após conferir tamanho e CRC. Copia os arquivos divergentes e publica/verifica o manifesto por último. Falha de escrita preserva a geração anterior válida. Evita regravar o marcador a cada checkpoint.
+- Ajustes menores: aceita texto recebido com quebras de linha e tabulação, preservando o corpo no SD e no detalhe; nomes, URLs e comandos mantêm validação de linha única. Corrige orientação de setas/Esc sem Fn e informa o limite de 49.152 registros, incluindo texto, estados de entrega, posições, telemetria e sessões.
+
+Validação offline: suíte nativa com ASan/UBSan e onze testes Python de OTA; LVGL real com teste de flush para tela idêntica/mudança de texto; build M8 e regressão alvo M6 aprovados. Casos novos incluem digitação contínua, estado idêntico, paginação nos dois sentidos, RX durante composição, modo de recuperação na UI, worker real de manutenção, confirmação sob saturação, reutilização de checkpoint, falha antes do manifesto/reboot e backup com MAC incorreto apesar de CRCs válidos. Fakes não comprovam concorrência/timing físico de FreeRTOS/SPI.
+
+Aplicação: `cardputer-adv-0.8.2-m8-candidate-ota.bin`; **884768 bytes**. RAM estática **147992 bytes**, flash vinculada **884337 bytes**. SHA-256 `3a72fbeac9793865622c15b0342ebcd11afe8c698da968fb1e8e3558aa8634e9`. Imagem ESP32-S3, hash das fontes, revisões upstream e checksums dos pacotes preservados conferidos.
+
+O item 3 da análise, remoção das esperas de SD do loop principal, permanece pendente. Mantidos persist-before-TX, flush antes da restauração normal e lock durante backup. Sem alteração de schema/bootloader/partições e sem envio ao dispositivo. Manifesto mantém estado de candidato e contrato instalado não verificado. Operação: [M8_USAGE.md](../../docs/M8_USAGE.md).

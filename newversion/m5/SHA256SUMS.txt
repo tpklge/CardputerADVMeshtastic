@@ -1,0 +1,1 @@
+6f191e77ca764ac4c84c1bfcad0fec2b1cb83596380b7d245609761a4809e501  cardputer-adv-0.5.0-m5-candidate-ota.bin
